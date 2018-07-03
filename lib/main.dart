@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:serra_app/add_item.dart';
 import 'package:serra_app/model/item.dart';
 
 void main() => runApp(new MyApp());
@@ -29,7 +30,7 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Item> items =
   <Item>[
     Item(
-        name: "My phone awdawdawdawdawdawd",
+        name: "My phone",
         description: "Galaxy S9",
         photoid: "item1.jpg",
         type: "content",
@@ -54,9 +55,13 @@ class _MyHomePageState extends State<MyHomePage> {
     ),
   ];
 
-  void _refresh() {
+  void _addItem() {
     setState(() {
     });
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => AddItem()),
+    );
   }
 
   @override
@@ -67,9 +72,25 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: itemsList(this.items),
       floatingActionButton: new FloatingActionButton(
-        onPressed: _refresh,
+        onPressed: _addItem,
         tooltip: 'Increment',
         child: new Icon(Icons.add),
+      ),
+      bottomNavigationBar: new BottomNavigationBar(
+        items: [
+          new BottomNavigationBarItem(
+          icon: new Icon(Icons.work),
+          title: new Text("Items")
+          ),
+          new BottomNavigationBarItem(
+          icon: new Icon(Icons.attach_money),
+          title: new Text("Wallet")
+          ),
+          new BottomNavigationBarItem(
+          icon: new Icon(Icons.healing),
+          title: new Text("Report Claim")
+          )
+        ]
       ),
     );
   }
@@ -141,32 +162,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ],
             )
-
-//            new ListTile(
-//                leading: new Image.network(
-//                  "https://firebasestorage.googleapis.com/v0/b/serradb.appspot.com/o/"+item.photoid+"?alt=media",
-//                  height: 100.0,
-//                  width: 100.0,
-//                  fit: BoxFit.fitHeight,
-//                ),
-//                selected: item.protected,
-//                title: Text(item.name),
-//                subtitle: Text("\$" + item.premium.toString()),
-//                onTap: () { /* react to the tile being tapped */ },
-//                trailing: new ButtonBar(
-//                  children: <Widget>[
-//                    new IconButton(
-//                        icon: Icon(Icons.beenhere),
-//                        onPressed: (){item.protected = !item.protected;
-//                        setState(() {
-//
-//                        });}),
-//                    new IconButton(
-//                        icon: Icon(Icons.date_range),
-//                        onPressed: (){}),
-//                  ],
-//                ),
-//            )
         )
       ).toList()
   );
