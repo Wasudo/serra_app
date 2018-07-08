@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:serra_app/add_item.dart';
 import 'package:serra_app/model/item.dart';
+import 'package:serra_app/wallet.dart';
 
 void main() => runApp(new MyApp());
 
@@ -26,88 +27,12 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => new _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  PageController _pageController;
-
-  /// 0: Items
-  /// 1: Wallet
-  /// 2: Claim
-  int _page = 0;
-
-  List<Item> items = <Item>[
-    Item(
-      name: "My phone",
-      description: "Galaxy S9",
-      photoid: "item1.jpg",
-      type: "content",
-      premium: 10000.00,
-      protected: false,
-    ),
-    Item(
-      name: "Innova",
-      description: "Toyota Innova",
-      photoid: "item2.jpg",
-      type: "vehicle",
-      premium: 12000.00,
-      protected: false,
-    ),
-    Item(
-      name: "My Camera",
-      description: "Nikkon DLSR",
-      photoid: "item3.jpg",
-      type: "content",
-      premium: 10000.00,
-      protected: false,
-    ),
-    Item(
-      name: "My Camera",
-      description: "Nikkon DLSR",
-      photoid: "item3.jpg",
-      type: "content",
-      premium: 10000.00,
-      protected: false,
-    ),
-    Item(
-      name: "My Camera",
-      description: "Nikkon DLSR",
-      photoid: "item3.jpg",
-      type: "content",
-      premium: 10000.00,
-      protected: false,
-    ),
-    Item(
-      name: "My Camera",
-      description: "Nikkon DLSR",
-      photoid: "item3.jpg",
-      type: "content",
-      premium: 10000.00,
-      protected: false,
-    ),
-    Item(
-      name: "My Camera",
-      description: "Nikkon DLSR",
-      photoid: "item3.jpg",
-      type: "content",
-      premium: 10000.00,
-      protected: false,
-    ),
-    Item(
-      name: "My Camera",
-      description: "Nikkon DLSR",
-      photoid: "item3.jpg",
-      type: "content",
-      premium: 10000.00,
-      protected: false,
-    ),
-    Item(
-      name: "My Camera",
-      description: "Nikkon DLSR",
-      photoid: "item3.jpg",
-      type: "content",
-      premium: 10000.00,
-      protected: false,
-    ),
-  ];
+class _MyHomePageState extends State<MyHomePage>
+    with SingleTickerProviderStateMixin {
+  List<Item> items;
+  TabController _controller;
+  int _index;
+  double walletBalance = 0.0;
 
   void _addItem() {
     setState(() {});
@@ -117,63 +42,96 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  void onPageChanged(int page) {
-    setState(() {
-      this._page = page;
-    });
-  }
-
-  void navigationTapped(int page) {
-    // Animating to the page.
-    // You can use whatever duration and curve you like
-    _pageController.animateToPage(page,
-        duration: const Duration(milliseconds: 300), curve: Curves.ease);
-  }
-
   @override
   void initState() {
     super.initState();
-    _pageController = new PageController();
-  }
+    walletBalance = 10000.00;
+    items = <Item>[
+      Item(
+        name: "My phone",
+        description: "Galaxy S9",
+        photoid: "item1.jpg",
+        type: "content",
+        premium: 2000.00,
+        protected: false,
+      ),
+      Item(
+        name: "Innova",
+        description: "Toyota Innova",
+        photoid: "item2.jpg",
+        type: "vehicle",
+        premium: 6000.00,
+        protected: false,
+      ),
+      Item(
+        name: "My Camera",
+        description: "Nikkon DLSR",
+        photoid: "item3.jpg",
+        type: "content",
+        premium: 2000.00,
+        protected: false,
+      ),
+    ];
 
-  @override
-  void dispose() {
-    super.dispose();
-    _pageController.dispose();
+    _controller = new TabController(length: 3, vsync: this);
+    _index = 0;
   }
 
   @override
   Widget build(BuildContext context) {
-    return new DefaultTabController(
-      length: 3,
-      child: new Scaffold(
-        appBar: new AppBar(
-          title: new Text(widget.title),
-        ),
-        body: new TabBarView(
-          children: [
-            new Scaffold(
-              body: itemsList(this.items),
-              floatingActionButton: new FloatingActionButton(
-                onPressed: _addItem,
-                tooltip: 'Increment',
-                child: new Icon(Icons.add),
+    return
+        //new DefaultTabController(
+        //length: 3,
+        //child:
+        new Scaffold(
+      appBar: new AppBar(
+        title: new Text(widget.title),
+        actions: <Widget>[
+          new FlatButton(
+            child: new Chip(
+              avatar: new CircleAvatar(
+                backgroundColor: Colors.grey.shade800,
+                child: new Text("\₱"),
               ),
+              label: new Text(walletBalance.toStringAsFixed(2)),
+              backgroundColor: Colors.white,
             ),
-            new Center(child: const Text("Wallet")),
-            new Center(child: const Text("Report Claim")),
-          ],
-        ),
-        bottomNavigationBar: new TabBar(
+            onPressed: () {
+              _controller.animateTo(1);
+            },
+          ),
+        ],
+      ),
+      body: new TabBarView(
+        controller: _controller,
+        children: <Widget>[
+          new Scaffold(
+            body: itemsList(this.items),
+            floatingActionButton: new FloatingActionButton(
+              onPressed: _addItem,
+              tooltip: 'Add Insured Item',
+              child: new Icon(Icons.add),
+            ),
+          ),
+          new Wallet(),
+          new Center(child: const Text("Report Claim")),
+        ],
+      ),
+      bottomNavigationBar: Card(
+        color: Colors.amber,
+        child: new TabBar(
+          controller: _controller,
           tabs: [
             new Tab(icon: new Icon(Icons.work), text: "Items"),
-            new Tab(icon: new Icon(Icons.attach_money), text: "Wallet"),
+            new Tab(
+                icon: new Icon(Icons.account_balance_wallet), text: "Wallet"),
             new Tab(icon: new Icon(Icons.healing), text: "Report Claim")
           ],
-          labelColor: Colors.amber,
+          labelColor: Colors.white,
           unselectedLabelColor: Colors.black,
         ),
       ),
+      // ),
     );
   }
 
@@ -217,7 +175,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           new Text(item.description),
                           new Text(""),
                           new Text(
-                            "\$" + item.premium.toString(),
+                            "\₱" + item.premium.toStringAsFixed(2),
                             style: new TextStyle(fontSize: 18.0),
                           ),
                         ],
