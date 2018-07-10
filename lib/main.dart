@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:serra_app/add_item.dart';
+import 'package:flutter/services.dart';
+import 'package:serra_app/home.dart';
 import 'package:serra_app/model/item.dart';
-import 'package:serra_app/wallet.dart';
+import 'package:serra_app/model/timer.dart';
 
-void main() => runApp(new MyApp());
+void main() {
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+  runApp(new SerraApp());
+}
 
-class MyApp extends StatelessWidget {
+class SerraApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
@@ -13,204 +18,151 @@ class MyApp extends StatelessWidget {
       theme: new ThemeData(
         primarySwatch: Colors.amber,
       ),
-      home: new MyHomePage(title: 'Serra'),
+      home: new LoginPage(title: 'Serra'),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+class LoginPage extends StatefulWidget {
+  LoginPage({Key key, this.title}) : super(key: key);
 
   final String title;
 
   @override
-  _MyHomePageState createState() => new _MyHomePageState();
+  LoginPageState createState() => new LoginPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage>
+class LoginPageState extends State<LoginPage>
     with SingleTickerProviderStateMixin {
-  List<Item> items;
-  TabController _controller;
-  int _index;
-  double walletBalance = 0.0;
-
-  void _addItem() {
-    setState(() {});
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => AddItem()),
-    );
-  }
+  List<Item> items = <Item>[
+    Item(
+      name: "My phone",
+      description: "Galaxy S9",
+      photoid: "item1.jpg",
+      type: "content",
+      premium: Currency(val:0.00),
+      protected: false,
+      timer: new Dependencies(),
+    ),
+    Item(
+      name: "Innova",
+      description: "Toyota Innova",
+      photoid: "item2.jpg",
+      type: "vehicle",
+      premium: Currency(val:0.00),
+      protected: false,
+      timer: new Dependencies(),
+    ),
+    Item(
+      name: "My Camera",
+      description: "Nikkon DLSR",
+      photoid: "item3.jpg",
+      type: "content",
+      premium: Currency(val:0.00),
+      protected: false,
+      timer: new Dependencies(),
+    ),
+  ];
 
   @override
   void initState() {
     super.initState();
-    walletBalance = 10000.00;
-    items = <Item>[
-      Item(
-        name: "My phone",
-        description: "Galaxy S9",
-        photoid: "item1.jpg",
-        type: "content",
-        premium: 2000.00,
-        protected: false,
-      ),
-      Item(
-        name: "Innova",
-        description: "Toyota Innova",
-        photoid: "item2.jpg",
-        type: "vehicle",
-        premium: 6000.00,
-        protected: false,
-      ),
-      Item(
-        name: "My Camera",
-        description: "Nikkon DLSR",
-        photoid: "item3.jpg",
-        type: "content",
-        premium: 2000.00,
-        protected: false,
-      ),
-    ];
-
-    _controller = new TabController(length: 3, vsync: this);
-    _index = 0;
   }
 
   @override
   Widget build(BuildContext context) {
-    return
-        //new DefaultTabController(
-        //length: 3,
-        //child:
-        new Scaffold(
-      appBar: new AppBar(
-        title: new Text(widget.title),
-        actions: <Widget>[
-          new FlatButton(
-            child: new Chip(
-              avatar: new CircleAvatar(
-                backgroundColor: Colors.grey.shade800,
-                child: new Text("\₱"),
-              ),
-              label: new Text(walletBalance.toStringAsFixed(2)),
-              backgroundColor: Colors.white,
-            ),
-            onPressed: () {
-              _controller.animateTo(1);
-            },
-          ),
-        ],
-      ),
-      body: new TabBarView(
-        controller: _controller,
-        children: <Widget>[
-          new Scaffold(
-            body: itemsList(this.items),
-            floatingActionButton: new FloatingActionButton(
-              onPressed: _addItem,
-              tooltip: 'Add Insured Item',
-              child: new Icon(Icons.add),
-            ),
-          ),
-          new Wallet(),
-          new Center(child: const Text("Report Claim")),
-        ],
-      ),
-      bottomNavigationBar: Card(
-        color: Colors.amber,
-        child: new TabBar(
-          controller: _controller,
-          tabs: [
-            new Tab(icon: new Icon(Icons.work), text: "Items"),
-            new Tab(
-                icon: new Icon(Icons.account_balance_wallet), text: "Wallet"),
-            new Tab(icon: new Icon(Icons.healing), text: "Report Claim")
-          ],
-          labelColor: Colors.white,
-          unselectedLabelColor: Colors.black,
+    final logo = Hero(
+      tag: 'logo',
+      child: CircleAvatar(
+        backgroundColor: Colors.transparent,
+        radius: 100.0,
+        child: Image.asset(
+          'assets/serra_logo.png',
+          fit: BoxFit.contain,
         ),
       ),
-      // ),
+    );
+
+    final email = TextFormField(
+      keyboardType: TextInputType.emailAddress,
+      autofocus: false,
+      decoration: InputDecoration(
+        hintText: 'Email',
+        contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(0.0)),
+        fillColor: Colors.white,
+        filled: true,
+      ),
+    );
+
+    final password = TextFormField(
+      autofocus: false,
+      obscureText: true,
+      decoration: InputDecoration(
+        hintText: 'Password',
+        contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(0.0)),
+        fillColor: Colors.white,
+        filled: true,
+      ),
+    );
+
+    final loginButton = Padding(
+      padding: EdgeInsets.symmetric(vertical: 16.0),
+      child: Material(
+        borderRadius: BorderRadius.circular(0.0),
+        shadowColor: Colors.amber.shade100,
+        elevation: 5.0,
+        child: MaterialButton(
+          minWidth: 200.0,
+          height: 42.0,
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => MyApp(items: items)),
+            );
+          },
+          color: Colors.white,
+          child: Text('Log In'),
+        ),
+      ),
+    );
+
+    final forgotLabel = FlatButton(
+      child: Text(
+        'Forgot password?',
+        style: TextStyle(color: Colors.black54),
+      ),
+      onPressed: () {},
+    );
+
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(colors: [
+            Colors.orange,
+            Colors.amberAccent,
+          ]),
+        ),
+        child: Center(
+          child: ListView(
+            shrinkWrap: true,
+            padding: EdgeInsets.only(left: 24.0, right: 24.0),
+            children: <Widget>[
+              logo,
+              SizedBox(height: 48.0),
+              email,
+              SizedBox(height: 8.0),
+              password,
+              SizedBox(height: 24.0),
+              loginButton,
+              forgotLabel
+            ],
+          ),
+        ),
+      ),
     );
   }
-
-  Widget itemsList(List<Item> items) => ListView(
-      shrinkWrap: true,
-      children: items
-          .map((item) => new Card(
-//          color: item.protected? Colors.amber: Colors.white,
-                  child: new Row(
-                children: <Widget>[
-                  new Expanded(
-                    child: new Container(
-                      height: 100.0,
-                      color: item.protected ? Colors.amber : Colors.white,
-                      child: new Icon(
-                        item.protected ? Icons.beenhere : null,
-                        color: Colors.white,
-                      ),
-                    ),
-                    flex: item.protected ? 0 : 2,
-                  ),
-                  new Expanded(
-                    child: new Image.network(
-                      "https://firebasestorage.googleapis.com/v0/b/serradb.appspot.com/o/" +
-                          item.photoid +
-                          "?alt=media",
-                      fit: BoxFit.fitHeight,
-                      height: 100.0,
-                    ),
-                    flex: 20,
-                  ),
-                  new Expanded(
-                    child: new Padding(
-                      padding: new EdgeInsets.all(10.0),
-                      child: new Column(
-                        children: <Widget>[
-                          new Text(
-                            item.name,
-                            style: new TextStyle(fontSize: 18.0),
-                          ),
-                          new Text(item.description),
-                          new Text(""),
-                          new Text(
-                            "\₱" + item.premium.toStringAsFixed(2),
-                            style: new TextStyle(fontSize: 18.0),
-                          ),
-                        ],
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                      ),
-                    ),
-                    flex: 40,
-                  ),
-                  new Expanded(
-                    child: !item.protected
-                        ? new ButtonBar(
-                            children: <Widget>[
-                              new IconButton(
-                                  icon: Icon(
-                                    Icons.date_range,
-                                    size: 30.0,
-                                  ),
-                                  onPressed: () {}),
-                              new IconButton(
-                                  icon: Icon(Icons.beenhere, size: 30.0),
-                                  onPressed: () {
-                                    item.protected = !item.protected;
-                                    setState(() {});
-                                  }),
-                            ],
-                          )
-                        : new IconButton(
-                            icon: Icon(Icons.cancel, size: 30.0),
-                            onPressed: () {
-                              item.protected = !item.protected;
-                              setState(() {});
-                            }),
-                    flex: !item.protected ? 47 : 20,
-                  ),
-                ],
-              )))
-          .toList());
 }

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:serra_app/model/timer.dart';
 
 class Item {
   String name;
   String type;
-  double premium;
+  Currency premium;
   String photoid;
   String description;
   bool protected;
+  Dependencies timer;
 
   Item(
       {this.name,
@@ -14,9 +16,11 @@ class Item {
       this.premium,
       this.photoid,
       this.description,
-      this.protected}
-      );
-
-  
+      this.protected,
+      this.timer});
 }
 
+class Currency {
+  double val;
+  Currency({this.val});
+}
