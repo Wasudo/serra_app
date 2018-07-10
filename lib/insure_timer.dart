@@ -9,7 +9,8 @@ class InsuranceTimer extends StatefulWidget {
   final double premium;
   final Currency totalPremium;
 
-  InsuranceTimerState createState() => new InsuranceTimerState(dependencies: dependencies, premium: premium, totalPremium: totalPremium);
+  InsuranceTimerState createState() => new InsuranceTimerState(
+      dependencies: dependencies, premium: premium, totalPremium: totalPremium);
 }
 
 class InsuranceTimerState extends State<InsuranceTimer> {
@@ -48,7 +49,10 @@ class InsuranceTimerState extends State<InsuranceTimer> {
 
   @override
   Widget build(BuildContext context) {
-    return new DisplayPremiumValue(dependencies: dependencies, premium: premium, totalPremium: totalPremium);
+    return new DisplayPremiumValue(
+        dependencies: dependencies,
+        premium: premium,
+        totalPremium: totalPremium);
   }
 }
 
@@ -58,11 +62,13 @@ class DisplayPremiumValue extends StatefulWidget {
   final double premium;
   final Currency totalPremium;
 
-  DisplayPremiumValueState createState() => new DisplayPremiumValueState(dependencies: dependencies, premium: premium, totalPremium: totalPremium);
+  DisplayPremiumValueState createState() => new DisplayPremiumValueState(
+      dependencies: dependencies, premium: premium, totalPremium: totalPremium);
 }
 
 class DisplayPremiumValueState extends State<DisplayPremiumValue> {
-  DisplayPremiumValueState({this.dependencies, this.premium, this.totalPremium});
+  DisplayPremiumValueState(
+      {this.dependencies, this.premium, this.totalPremium});
   final Dependencies dependencies;
   final double premium;
   final Currency totalPremium;
@@ -78,8 +84,7 @@ class DisplayPremiumValueState extends State<DisplayPremiumValue> {
   }
 
   void onTick(ElapsedTime elapsed) {
-    if (elapsed.minutes != minutes &&
-          this.mounted) {
+    if (elapsed.minutes != minutes && this.mounted) {
       setState(() {
         minutes = elapsed.minutes;
         value = premium * (minutes % 60);
@@ -91,7 +96,6 @@ class DisplayPremiumValueState extends State<DisplayPremiumValue> {
   @override
   Widget build(BuildContext context) {
     String valueStr = value.toStringAsFixed(2);
-    return new Text("\₱$valueStr",
-        style: new TextStyle(fontSize: 18.0));
+    return new Text("\₱$valueStr", style: new TextStyle(fontSize: 18.0));
   }
 }

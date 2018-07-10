@@ -168,7 +168,9 @@ class MyHomePageState extends State<MyHomePage>
                           new Text(item.description),
                           new Text(""),
                           new InsuranceTimer(
-                              dependencies: item.timer, premium: 5.0, totalPremium: item.premium),
+                              dependencies: item.timer,
+                              premium: 5.0,
+                              totalPremium: item.premium),
                         ],
                         crossAxisAlignment: CrossAxisAlignment.start,
                       ),
@@ -202,6 +204,8 @@ class MyHomePageState extends State<MyHomePage>
                               item.protected = !item.protected;
                               item.timer.stopwatch.stop();
                               walletBalance = walletBalance - item.premium.val;
+                              item.timer.stopwatch.reset();
+                              item.premium.val = 0.0;
                               setState(() {});
                             }),
                     flex: !item.protected ? 47 : 20,
