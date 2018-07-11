@@ -52,7 +52,7 @@ class AddItem extends StatelessWidget {
                       onPressed: (){
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => MyHomePage()),
+                          MaterialPageRoute(builder: (context) => UploadPhotoPage()),
                         );
                       },
                       icon: new Icon(Icons.airplanemode_active),
