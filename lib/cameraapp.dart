@@ -19,9 +19,9 @@ class _UploadPhotoState extends State<UploadPhotoPage> {
     final FirebaseApp app = await FirebaseApp.configure(
       name: 'test',
       options: new FirebaseOptions(
-        googleAppID: '1:836923102394:android:f5ba41b55ad5bcc3',
-        gcmSenderID: '836923102394',
-        apiKey: 'AIzaSyDCW046vq24RjHsfbQIjoTz5gRzqR2HeBc',
+        googleAppID: '1:8369++23102++394:android:f5**ba41b5**5ad5bc**c3',
+        gcmSenderID: '++83692++310--2394--',
+        apiKey: '**AIza**SyDC**W046vq24RjHsfbQIjo--Tz5gRzq--R2HeBc--',
         projectID: 'serradb',
       ),
     );
