@@ -105,7 +105,7 @@ class MyHomePageState extends State<MyHomePage>
               child: new Icon(Icons.add),
             ),
           ),
-          new Wallet(),
+          new Wallet(walletBalance: walletBalance),
           new Center(child: const Text("Report Claim")),
         ],
       ),
@@ -205,8 +205,9 @@ class MyHomePageState extends State<MyHomePage>
                               item.timer.stopwatch.stop();
                               walletBalance = walletBalance - item.premium.val;
                               item.timer.stopwatch.reset();
-                              item.premium.val = 0.0;
-                              setState(() {});
+                              setState(() {
+                                item.premium.val = 0.0;
+                              });
                             }),
                     flex: !item.protected ? 47 : 20,
                   ),

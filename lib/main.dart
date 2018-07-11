@@ -20,6 +20,7 @@ class SerraApp extends StatelessWidget {
       ),
       home: new LoginPage(title: 'Serra'),
       debugShowCheckedModeBanner: false,
+
     );
   }
 }

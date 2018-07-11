@@ -1,6 +1,17 @@
 import 'package:flutter/material.dart';
 
-class Wallet extends StatelessWidget {
+class Wallet extends StatefulWidget {
+  Wallet({this.walletBalance});
+  final double walletBalance;
+
+  @override
+  WalletState createState() => new WalletState(walletBalance: walletBalance);
+}
+
+class WalletState extends State<Wallet> {
+  WalletState({this.walletBalance});
+  final double walletBalance;
+
   @override
   Widget build(BuildContext context) {
     return Column(mainAxisSize: MainAxisSize.max, children: <Widget>[
@@ -22,7 +33,7 @@ class Wallet extends StatelessWidget {
                 child:
                     Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
                   Text("Total balance", style: new TextStyle(fontSize: 20.0)),
-                  Text("\₱10,000.00", style: new TextStyle(fontSize: 35.0)),
+                  Text("\₱$walletBalance", style: new TextStyle(fontSize: 35.0)),
                   Divider(
                     color: Colors.brown,
                   ),

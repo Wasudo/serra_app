@@ -87,7 +87,14 @@ class DisplayPremiumValueState extends State<DisplayPremiumValue> {
     if (elapsed.minutes != minutes && this.mounted) {
       setState(() {
         minutes = elapsed.minutes;
-        value = premium * (minutes % 60);
+        print (minutes.toString());
+        if (minutes > 60) {
+          value = premium * minutes;
+        } else if (minutes < 60 && minutes > 0) {
+          value = premium * 60;
+        } else {
+          value = 0.0;
+        }
         totalPremium.val = value;
       });
     }
@@ -96,6 +103,7 @@ class DisplayPremiumValueState extends State<DisplayPremiumValue> {
   @override
   Widget build(BuildContext context) {
     String valueStr = value.toStringAsFixed(2);
+
     return new Text("\₱$valueStr", style: new TextStyle(fontSize: 18.0));
   }
 }
