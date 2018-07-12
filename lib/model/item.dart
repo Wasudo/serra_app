@@ -5,6 +5,8 @@ class Item {
   String name;
   String type;
   Currency premium;
+  Currency price;
+  int ageInMonths;
   String photoid;
   String description;
   bool protected;

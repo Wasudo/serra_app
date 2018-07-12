@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:serra_app/add_personal.dart';
 import 'package:serra_app/cameraapp.dart';
+import 'package:serra_app/model/userdata.dart';
 
 class AddItem extends StatelessWidget {
+  final UserData data;
+
+  // In the constructor, require a Todo
+  AddItem({Key key, @required this.data}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,8 +23,8 @@ class AddItem extends StatelessWidget {
       body: new Column(
           children: <Widget>[
             new Padding(
-              padding: new EdgeInsets.all(8.0),
-              child: const Text("Select item type to Insure:", style: TextStyle(fontSize: 20.0),),
+              padding: new EdgeInsets.all(20.0),
+              child: const Text("Select item type to Insure", style: TextStyle(fontSize: 20.0),),
             ),
             new Expanded (child:
             new GridView.count(
@@ -34,7 +40,7 @@ class AddItem extends StatelessWidget {
                       onPressed: (){
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => AddPersonal()),
+                          MaterialPageRoute(builder: (context) => AddPersonal(data: data,)),
                         );
                       },
                       icon: new Icon(Icons.phone_android),
@@ -50,10 +56,6 @@ class AddItem extends StatelessWidget {
                   child: new Column(children: <Widget> [
                     new IconButton(
                       onPressed: (){
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => UploadPhotoPage()),
-                        );
                       },
                       icon: new Icon(Icons.airplanemode_active),
                       splashColor: Colors.amber,

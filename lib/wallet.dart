@@ -33,7 +33,8 @@ class WalletState extends State<Wallet> {
                 child:
                     Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
                   Text("Total balance", style: new TextStyle(fontSize: 20.0)),
-                  Text("\₱$walletBalance", style: new TextStyle(fontSize: 35.0)),
+                  Text("\₱$walletBalance",
+                      style: new TextStyle(fontSize: 35.0)),
                   Divider(
                     color: Colors.brown,
                   ),
@@ -51,8 +52,61 @@ class WalletState extends State<Wallet> {
         ),
       ),
       new Expanded(
-        child: new Center(
-          child: new Text("Button"),
+        child: new GridView.count(
+          primary: false,
+          padding: const EdgeInsets.all(20.0),
+          crossAxisSpacing: 20.0,
+          mainAxisSpacing: 20.0,
+          crossAxisCount: 3,
+          children: <Widget>[
+            new Material(
+              borderRadius: BorderRadius.circular(0.0),
+              shadowColor: Colors.amber.shade100,
+              elevation: 2.0,
+              child: MaterialButton(
+                minWidth: 500.0,
+                height: 85.0,
+                color: Colors.amber,
+                onPressed: () {},
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[Icon(Icons.add, size: 24.0,), Text('Add Funds', textAlign: TextAlign.center,)]),
+              ),
+            ),
+            new Material(
+              borderRadius: BorderRadius.circular(0.0),
+              shadowColor: Colors.amber.shade100,
+              elevation: 2.0,
+              child: MaterialButton(
+                minWidth: 500.0,
+                height: 85.0,
+                color: Colors.amber,
+                onPressed: () {},
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[Icon(Icons.card_giftcard, size: 24.0,), Text('Rewards', textAlign: TextAlign.center,)]),
+              ),
+
+            ),
+            new Material(
+              borderRadius: BorderRadius.circular(0.0),
+              shadowColor: Colors.amber.shade100,
+              elevation: 2.0,
+              child: MaterialButton(
+                minWidth: 500.0,
+                height: 85.0,
+                color: Colors.amber,
+                onPressed: () {},
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[Icon(Icons.history, size: 24.0,), Text('History', textAlign: TextAlign.center,)]),
+              ),
+
+            ),
+          ],
         ),
       ),
     ]);

@@ -3,6 +3,7 @@ import 'package:serra_app/add_item.dart';
 import 'package:serra_app/insure_timer.dart';
 import 'package:serra_app/model/item.dart';
 import 'package:serra_app/model/timer.dart';
+import 'package:serra_app/model/userdata.dart';
 import 'package:serra_app/wallet.dart';
 import 'dart:async';
 
@@ -40,6 +41,8 @@ class MyHomePageState extends State<MyHomePage>
   MyHomePageState({this.items});
   final List<Item> items;
 
+  UserData data;
+
   TabController _controller;
   double walletBalance = 0.0;
 
@@ -57,13 +60,15 @@ class MyHomePageState extends State<MyHomePage>
     setState(() {});
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => AddItem()),
+      MaterialPageRoute(builder: (context) => AddItem(data: data)),
     );
   }
 
   @override
   void initState() {
     super.initState();
+
+    data = new UserData(items: items);
     walletBalance = 10000.00;
 
     _controller = new TabController(length: 3, vsync: this);
@@ -71,11 +76,7 @@ class MyHomePageState extends State<MyHomePage>
 
   @override
   Widget build(BuildContext context) {
-    return
-        //new DefaultTabController(
-        //length: 3,
-        //child:
-        new Scaffold(
+    return new Scaffold(
       appBar: new AppBar(
         title: new Text(widget.title),
         actions: <Widget>[
@@ -98,7 +99,7 @@ class MyHomePageState extends State<MyHomePage>
         controller: _controller,
         children: <Widget>[
           new Scaffold(
-            body: itemsList(this.items),
+            body: itemsList(data.items),
             floatingActionButton: new FloatingActionButton(
               onPressed: _addItem,
               tooltip: 'Add Insured Item',
@@ -123,7 +124,6 @@ class MyHomePageState extends State<MyHomePage>
           unselectedLabelColor: Colors.black,
         ),
       ),
-      // ),
     );
   }
 
@@ -181,12 +181,12 @@ class MyHomePageState extends State<MyHomePage>
                     child: !item.protected
                         ? new ButtonBar(
                             children: <Widget>[
-                              new IconButton(
-                                  icon: Icon(
-                                    Icons.date_range,
-                                    size: 30.0,
-                                  ),
-                                  onPressed: () {}),
+//                              new IconButton(
+//                                  icon: Icon(
+//                                    Icons.date_range,
+//                                    size: 30.0,
+//                                  ),
+//                                  onPressed: () {}),
                               new IconButton(
                                   icon: Icon(Icons.beenhere,
                                       size: 30.0), //Protect
