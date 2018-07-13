@@ -7,6 +7,8 @@ import 'package:serra_app/model/userdata.dart';
 import 'package:serra_app/wallet.dart';
 import 'dart:async';
 
+enum Department {treasury, state}
+
 class MyApp extends StatelessWidget {
   MyApp({this.items});
   final List<Item> items;
@@ -62,6 +64,35 @@ class MyHomePageState extends State<MyHomePage>
       context,
       MaterialPageRoute(builder: (context) => AddItem(data: data)),
     );
+  }
+
+  Future<Null> _startCoverage() async {
+    switch (await showDialog<Department>(
+        context: context,
+        builder: (BuildContext context) {
+          return new SimpleDialog(
+            title: const Text('Select assignment'),
+            children: <Widget>[
+              new SimpleDialogOption(
+                onPressed: () { Navigator.pop(context, Department.treasury); },
+                child: const Text('Treasury department'),
+              ),
+              new SimpleDialogOption(
+                onPressed: () { Navigator.pop(context, Department.state); },
+                child: const Text('State department'),
+              ),
+            ],
+          );
+        }
+    )) {
+      case Department.treasury:
+      // Let's go.
+      // ...
+        break;
+      case Department.state:
+      // ...
+        break;
+    }
   }
 
   @override
@@ -191,6 +222,7 @@ class MyHomePageState extends State<MyHomePage>
                                   icon: Icon(Icons.beenhere,
                                       size: 30.0), //Protect
                                   onPressed: () {
+                                    _startCoverage();
                                     item.protected = !item.protected;
                                     item.timer.stopwatch.start();
 
